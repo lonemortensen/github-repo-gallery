@@ -4,6 +4,8 @@
 const profile = document.querySelector(".overview");
 //My GitHub username:
 const username = "lonemortensen";
+//List of my public GitHub repos will appear here:
+const repoList = document.querySelector(".repo-list");
 
 //Fetch GitHub user information:
 const getUserInfo = async function () {
@@ -31,4 +33,24 @@ const displayUserInfo = function(userInfo) {
         </div>
     `;
     profile.append(divElement);
+    getRepos();
 }; 
+
+//Fetch public GitHub repos:
+const getRepos = async function () {
+    const response = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repoData = await response.json();
+    //console.log(repoData);
+    displayRepos(repoData);
+};
+
+//Display information about repos:
+const displayRepos = function(repos) {
+    for(const item of repos) {
+        const repoItem = document.createElement("li");
+        repoItem.classList.add("repo");
+        repoItem.innerHTML = `<h3>${item.name}</h3>`; 
+        repoList.append(repoItem);
+    }
+};
+
