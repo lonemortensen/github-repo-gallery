@@ -10,12 +10,15 @@ const repoList = document.querySelector(".repo-list");
 const repoContainer = document.querySelector(".repos");
 //Data for the individual GitHub repo will appear here:
 const repoIndividual = document.querySelector(".repo-data");
+//The Back to Repo Gallery button:
+const backToRepo = document.querySelector(".view-repos");
+//The repo search field:
+const filterInput = document.querySelector(".filter-repos");
 
 //Fetch GitHub user information:
 const getUserInfo = async function () {
     const response = await fetch (`https://api.github.com/users/${username}`);
     const userInfo = await response.json();
-    //console.log(userInfo);
     displayUserInfo(userInfo);
 };
 
@@ -44,12 +47,12 @@ const displayUserInfo = function(userInfo) {
 const getRepos = async function () {
     const response = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repoData = await response.json();
-    //console.log(repoData);
     displayRepos(repoData);
 };
 
-//Display information (name) about repos:
+//Display information (name) about repos + display repo search field:
 const displayRepos = function(repos) {
+    filterInput.classList.remove("hide");
     for(const item of repos) {
         const repoItem = document.createElement("li");
         repoItem.classList.add("repo");
@@ -60,7 +63,7 @@ const displayRepos = function(repos) {
 
 //Add eventlistener for entire repo list + pull data for individual repos (h3):
 repoList.addEventListener("click", function(e) { 
-    if (e.target.matches("h3")) { //captures click on individual repo titles, checks if target matches a specific element.
+    if (e.target.matches("h3")) { //captures click on individual repo titles; checks if target matches a specific element.
         const repoName = e.target.innerText;
         getRepoInfo(repoName);
     }
@@ -70,15 +73,12 @@ repoList.addEventListener("click", function(e) {
 const getRepoInfo = async function(repoName) {
     const response = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
     const repoInfo = await response.json();
-    //console.log(repoInfo);
     const fetchLanguages = await fetch(`https://api.github.com/repos/${username}/${repoName}/languages`)
     const languageData = await fetchLanguages.json();
-    //console.log(languageData);
     const languages = [];
-    for (let key in languageData) { //loops through the languageData object keys.
+    for (let key in languageData) { //loops through languageData object keys.
         languages.push(key);
     }
-    //console.log(languages);
     displayRepoInfo(repoInfo, languages);
 };  
 
@@ -96,5 +96,28 @@ const displayRepoInfo = function (repoInfo, languages) {
     repoIndividual.append(divElement);
     repoIndividual.classList.remove("hide");
     repoContainer.classList.add("hide");
+    backToRepo.classList.remove("hide");
 };
 
+//Add eventlistener to Back to Repo Gallery button:
+backToRepo.addEventListener("click", function() {
+    repoContainer.classList.remove("hide");
+    repoIndividual.classList.add("hide");
+    backToRepo.classList.add("hide");
+});
+
+//Add eventlistener to the repo search field to create dynamic search for repos: 
+filterInput.addEventListener("input", function(e) {
+    const inputValue = e.target.value; 
+    const repos = document.querySelectorAll(".repo"); //selects classList added to repoItem (li).
+    const lowerCaseInputText = inputValue.toLowerCase();
+    for (let repo of repos) {
+        const lowerCaseRepoText = repo.innerText.toLowerCase();
+        if (lowerCaseRepoText.includes(lowerCaseInputText)) {
+            repo.classList.remove("hide");
+        }
+        else {
+            repo.classList.add("hide");
+        }
+    }
+});
