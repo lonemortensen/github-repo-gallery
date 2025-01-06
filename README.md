@@ -6,7 +6,7 @@ The GitHub Repo Gallery lets users view and search for public repos and click on
 
 Using the GitHub’s REST API to pull data from a GitHub account, the gallery automatically updates and displays the most current repo versions.
 
-![GitHub Repo Gallery](img/github-repo-gallery-screenshot)
+![GitHub Repo Gallery](img/github-repo-gallery-screenshot.png)
 
 ## Project Background
 I built the GitHub Repo Gallery project as part of Skillcrush’s “JavaScript Fundamentals” course. 
