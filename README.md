@@ -4,7 +4,7 @@ The interactive GitHub Repo Gallery utilizes JavaScript and an API to fetch and 
 ## About
 The GitHub Repo Gallery lets users view and search for public repos and click on individual repos to access additional details and links. 
 
-Using the GitHub’s REST API to pull data from a GitHub account, the gallery automatically updates and displays the most current repo versions.
+Using the GitHub REST API to pull data from a GitHub account, the gallery automatically updates and displays the most current repo versions.
 
 ![GitHub Repo Gallery](img/github-repo-gallery-screenshot.png)
 
